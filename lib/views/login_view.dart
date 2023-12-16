@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'dart:developer' as devtools show log; // CONSOLE LOG
 
 class LoginView extends StatefulWidget {
   const LoginView({Key? key}) : super(key: key);
@@ -11,9 +12,6 @@ class LoginView extends StatefulWidget {
 class _LoginViewState extends State<LoginView> {
   late final TextEditingController _emailController = TextEditingController();
   late final TextEditingController _passwordController = TextEditingController();
-  // variable to store the user session
-  late final User? _user;
-  late final Session? _session;
 
   @override
   void initState() { // esto hace que se inicialicen las variables cuando se crea el widget
@@ -30,7 +28,7 @@ class _LoginViewState extends State<LoginView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: null,
+      appBar: AppBar(title: const Text('Login')),
       backgroundColor: const Color(0xFFF7BF50),
       body:
         Center(
@@ -74,20 +72,22 @@ class _LoginViewState extends State<LoginView> {
                     try {
                       final res = await Supabase.instance.client.auth.signInWithPassword(email: email, password: password);
                       if (res.user == null || res.session == null) {
-                        print('Sign in failed.');
+                        devtools.log('Sign in failed.');
                       } else {
-                        print('Sign in successful.');
-                        _user = res.user;
-                        _session = res.session;
+                        devtools.log('Sign in successful.');
+                        Navigator.pushNamed(context, '/');
                       }
                     }
                     catch (e) {
-                      print(e);
+                      devtools.log(e.toString());
                     }
                   },
                   child: const Text('Log in')),
                 ],
-              )
+              ),
+              TextButton(onPressed: () {
+                Navigator.pushNamed(context, '/register/');
+              }, child: const Text('Not registered yet? Register here.'))
             ],
           ))
     );

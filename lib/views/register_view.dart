@@ -28,7 +28,7 @@ class _RegisterViewState extends State<RegisterView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: null,
+      appBar: AppBar(title: const Text('Register')),
       backgroundColor: const Color(0xFFF7BF50),
       body:
         Center(
@@ -80,7 +80,10 @@ class _RegisterViewState extends State<RegisterView> {
                   },
                   child: const Text('Sign up')),
                 ],
-              )
+              ),
+              TextButton(onPressed: () {
+                Navigator.pushNamed(context, '/login/');
+              }, child: const Text('Already have an account? Login'))
             ],
           ))
     );
